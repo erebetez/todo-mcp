@@ -1,0 +1,19 @@
+{
+  "name": "todo-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server + REST API for a SQLite-backed todo list",
+  "type": "module",
+  "main": "src/mcpServer.js",
+  "scripts": {
+    "mcp": "node src/mcpServer.js",
+    "api": "node src/apiServer.js",
+    "dev": "node src/apiServer.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "better-sqlite3": "^11.9.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "zod": "^3.24.2"
+  }
+}
