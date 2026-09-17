@@ -75,6 +75,11 @@ server.registerTool(
       id: z.number().int(),
       description: z.string().optional(),
       date_planned: z.string().nullable().optional(),
+      resolution: z
+        .string()
+        .nullable()
+        .optional()
+        .describe("Notes on how this was/should be resolved, useful for recurring todos"),
     },
   },
   async ({ id, ...fields }) => {
@@ -92,10 +97,14 @@ server.registerTool(
     inputSchema: {
       id: z.number().int(),
       done_by: z.string().optional().describe("Who/what completed this task"),
+      resolution: z
+        .string()
+        .optional()
+        .describe("How this was resolved, useful for fixing recurring todos faster next time"),
     },
   },
-  async ({ id, done_by }) => {
-    const todo = todos.completeTodo(id, done_by);
+  async ({ id, done_by, resolution }) => {
+    const todo = todos.completeTodo(id, done_by, resolution ?? null);
     if (!todo) return { content: [{ type: "text", text: `No todo with id ${id}` }], isError: true };
     return asText(todo);
   }

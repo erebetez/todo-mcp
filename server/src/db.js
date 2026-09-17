@@ -17,9 +17,15 @@ db.exec(`
     date_planned TEXT,
     date_done TEXT,
     done_by TEXT,
-    created_by TEXT
+    created_by TEXT,
+    resolution TEXT
   );
 `);
+
+const existingColumns = db.prepare("PRAGMA table_info(todos)").all().map((c) => c.name);
+if (!existingColumns.includes("resolution")) {
+  db.exec("ALTER TABLE todos ADD COLUMN resolution TEXT");
+}
 
 function rowToTodo(row) {
   if (!row) return row;
@@ -50,7 +56,7 @@ export function addTodo({ description, date_planned = null, created_by = null })
   return getTodo(info.lastInsertRowid);
 }
 
-const UPDATABLE_FIELDS = ["description", "done", "date_planned", "date_done", "done_by"];
+const UPDATABLE_FIELDS = ["description", "done", "date_planned", "date_done", "done_by", "resolution"];
 
 export function updateTodo(id, fields) {
   const existing = getTodo(id);
@@ -80,12 +86,14 @@ export function updateTodo(id, fields) {
   return getTodo(id);
 }
 
-export function completeTodo(id, done_by = null) {
-  return updateTodo(id, {
+export function completeTodo(id, done_by = null, resolution = null) {
+  const updates = {
     done: 1,
     date_done: new Date().toISOString(),
     done_by,
-  });
+  };
+  if (resolution !== null) updates.resolution = resolution;
+  return updateTodo(id, updates);
 }
 
 export function deleteTodo(id) {
