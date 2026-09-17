@@ -50,10 +50,12 @@ function TodoRow({ todo, onUpdate, onDelete }) {
   const [description, setDescription] = useState(todo.description);
   const [datePlanned, setDatePlanned] = useState(toDateInputValue(todo.date_planned));
   const [doneBy, setDoneBy] = useState(todo.done_by || "");
+  const [resolution, setResolution] = useState(todo.resolution || "");
 
   useEffect(() => setDescription(todo.description), [todo.description]);
   useEffect(() => setDatePlanned(toDateInputValue(todo.date_planned)), [todo.date_planned]);
   useEffect(() => setDoneBy(todo.done_by || ""), [todo.done_by]);
+  useEffect(() => setResolution(todo.resolution || ""), [todo.resolution]);
 
   const commitDescription = () => {
     if (description.trim() && description !== todo.description) {
@@ -69,6 +71,12 @@ function TodoRow({ todo, onUpdate, onDelete }) {
   const commitDoneBy = () => {
     if (doneBy !== (todo.done_by || "")) {
       onUpdate(todo.id, { done_by: doneBy || null });
+    }
+  };
+
+  const commitResolution = () => {
+    if (resolution !== (todo.resolution || "")) {
+      onUpdate(todo.id, { resolution: resolution || null });
     }
   };
 
@@ -121,6 +129,18 @@ function TodoRow({ todo, onUpdate, onDelete }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onBlur={commitDescription}
+            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+          />
+        </td>
+      </tr>
+      <tr className={todo.done ? "done resolution-row" : "resolution-row"}>
+        <td className="col-resolution" colSpan={5}>
+          <input
+            type="text"
+            placeholder="Resolution notes (how this was/should be fixed)..."
+            value={resolution}
+            onChange={(e) => setResolution(e.target.value)}
+            onBlur={commitResolution}
             onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           />
         </td>

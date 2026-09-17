@@ -10,7 +10,7 @@ Both the MCP server and the REST API read/write the same `server/todo.db` SQLite
 
 ## Todo fields
 
-`id, description, done, date_created, date_planned, date_done, done_by, created_by`
+`id, description, done, date_created, date_planned, date_done, done_by, created_by, resolution`
 
 ## Setup
 

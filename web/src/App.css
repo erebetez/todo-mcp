@@ -91,7 +91,8 @@ tr.done .col-description input {
   text-decoration: line-through;
 }
 
-tr:has(+ .description-row) td {
+tr:has(+ .description-row) td,
+tr:has(+ .resolution-row) td {
   border-bottom: none;
 }
 
@@ -102,6 +103,17 @@ tr:has(+ .description-row) td {
 .col-description input {
   font-size: 1.2rem;
   padding: 0.3rem 0.3rem 0.6rem;
+}
+
+.resolution-row td {
+  padding-top: 0;
+}
+
+.col-resolution input {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #666;
+  padding: 0.2rem 0.3rem 0.5rem;
 }
 
 td input[type="text"],
