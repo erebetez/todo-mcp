@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import "./App.css";
 
 const API_BASE = "/api/todos";
@@ -46,16 +46,24 @@ function NewTodoRow({ onAdd }) {
   );
 }
 
+function autoGrow(el) {
+  if (!el) return;
+  el.style.height = "auto";
+  el.style.height = `${el.scrollHeight}px`;
+}
+
 function TodoRow({ todo, onUpdate, onDelete }) {
   const [description, setDescription] = useState(todo.description);
   const [datePlanned, setDatePlanned] = useState(toDateInputValue(todo.date_planned));
   const [doneBy, setDoneBy] = useState(todo.done_by || "");
   const [resolution, setResolution] = useState(todo.resolution || "");
+  const descriptionRef = useRef(null);
 
   useEffect(() => setDescription(todo.description), [todo.description]);
   useEffect(() => setDatePlanned(toDateInputValue(todo.date_planned)), [todo.date_planned]);
   useEffect(() => setDoneBy(todo.done_by || ""), [todo.done_by]);
   useEffect(() => setResolution(todo.resolution || ""), [todo.resolution]);
+  useEffect(() => autoGrow(descriptionRef.current), [description]);
 
   const commitDescription = () => {
     if (description.trim() && description !== todo.description) {
@@ -124,12 +132,13 @@ function TodoRow({ todo, onUpdate, onDelete }) {
       </tr>
       <tr className={todo.done ? "done description-row" : "description-row"}>
         <td className="col-description" colSpan={5}>
-          <input
-            type="text"
+          <textarea
+            ref={descriptionRef}
+            rows={1}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onBlur={commitDescription}
-            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && e.currentTarget.blur()}
           />
         </td>
       </tr>
