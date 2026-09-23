@@ -87,7 +87,7 @@ tr.done td {
   color: #999;
 }
 
-tr.done .col-description input {
+tr.done .col-description textarea {
   text-decoration: line-through;
 }
 
@@ -100,9 +100,14 @@ tr:has(+ .resolution-row) td {
   padding-top: 0;
 }
 
-.col-description input {
+.col-description textarea {
   font-size: 1.2rem;
   padding: 0.3rem 0.3rem 0.6rem;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 1.6rem;
 }
 
 .resolution-row td {
@@ -117,7 +122,8 @@ tr:has(+ .resolution-row) td {
 }
 
 td input[type="text"],
-td input[type="date"] {
+td input[type="date"],
+td textarea {
   border: 1px solid transparent;
   background: transparent;
   padding: 0.3rem;
@@ -129,8 +135,10 @@ td input[type="date"] {
 
 td input[type="text"]:hover,
 td input[type="date"]:hover,
+td textarea:hover,
 td input[type="text"]:focus,
-td input[type="date"]:focus {
+td input[type="date"]:focus,
+td textarea:focus {
   border-color: #ccc;
   background: #fff;
 }
